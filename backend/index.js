@@ -159,7 +159,20 @@ const setupGracefulShutdown = () => {
     process.on('SIGTERM', () => shutdown('SIGTERM'));
 };
 
-// Start bot
+const PORT = process.env.PORT || 8000;
+
+// Dummy server for health check
+const express = require('express');
+const app = express();
+
+app.get('/', (req, res) => {
+    res.send('Bot is running!');
+});
+
+app.listen(PORT, () => {
+    console.log(`Health check server is running on port ${PORT}`);
+});
+
 const startBot = async () => {
     try {
         await bot.launch();
